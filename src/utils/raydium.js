@@ -56,6 +56,7 @@ export const calcAmountOut = ( connection, poolKeys, rawAmountIn, swapInDirectio
 
     const currencyIn = new Token(TOKEN_PROGRAM_ID, currencyInMint, currencyInDecimals);
     const amountIn = new TokenAmount(currencyIn, rawAmountIn, false);
+    console.log("amountIn", amountIn.numerator.toNumber())
     const currencyOut = new Token(TOKEN_PROGRAM_ID, currencyOutMint, currencyOutDecimals);
     const _slippage = new Percent(slippage, 100); // 5% slippage
 
