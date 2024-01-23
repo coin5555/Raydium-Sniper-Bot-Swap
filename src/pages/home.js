@@ -22,10 +22,6 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { Typography } from '@mui/material';
 
 export default function LabTabs() {
-  const [value, setValue] = React.useState('1');
-
-
-  // const { connectWallet, walletAddress } = useWeb3();
 
   const dispatch = useDispatch();
 
@@ -65,7 +61,7 @@ export default function LabTabs() {
   return (
     <Box width="100%">
       <Box sx={{ maxWidth: 1500, typography: 'body1', mx:'auto', marginTop:1, px: 8, mt:3}} display='flex' justifyContent='space-between' alignItems='center'>
-        <Grid width={200} onClick={ () => navigate("/history") } container alignItems='center' gap={1} sx={{ cursor: 'pointer' }}><ReplyIcon/><Typography fontSize={15}>History</Typography></Grid>
+        <Grid width={150} onClick={ () => navigate("/history") } container alignItems='center' gap={1} sx={{ cursor: 'pointer' }}><ReplyIcon/><Typography fontSize={15}>History</Typography></Grid>
         <WalletMultiButton style={{ borderRadius:20 }}></WalletMultiButton>
       </Box>
       <Box sx={{ maxWidth: 1500, typography: 'body1', margin:'auto', padding: 5, mt: -4 }}>

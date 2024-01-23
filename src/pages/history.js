@@ -90,7 +90,7 @@ const History = () => {
 
   return (
     <Box sx={{ maxWidth: 1500, margin: 'auto', mt: 5 }}>
-      <Grid onClick={ () => navigate("/") } container alignItems='center' gap={1} sx={{ cursor: 'pointer' }}><ReplyIcon/><Typography fontSize={15}>Back</Typography></Grid>
+      <Grid width={150} onClick={ () => navigate("/") } container alignItems='center' gap={1} sx={{ cursor: 'pointer' }}><ReplyIcon/><Typography fontSize={15}>Back</Typography></Grid>
       <Grid mt={5} container justifyContent='space-between' alignItems='center'>
         <Typography fontSize={18}>Trading History ( {data.filter(item => item.state === value || value === "BUY/SELL" ).length}/{ data.length} ) </Typography>
         <FormControl size='small'  sx={{width: 200}}>
