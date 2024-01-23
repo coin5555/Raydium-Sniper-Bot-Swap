@@ -19,7 +19,6 @@ import {
   Market,
   Rounding,
   Spl,
-  // ComputeAmountOutLayout,
   SwapMath,
   TxVersion,
   buildTransaction, buildSimpleTransaction,
@@ -157,40 +156,18 @@ const NotificationProvider = ({ children }) => {
         payer: publicKey,
         innerTransactions
       });
-      console.log("transaction", transaction);
 
-      const signers =[
-        {
-          publicKey: publicKey,
-          secretKey: SECRET_KEY
-        }]
-
-      // console.log("signers", signersOrOptions)
-
-      // if(!Array.isArray(signersOrOptions)){
-      //   console.log("isArray", true);
-      // }
-      // if(signersOrOptions === undefined){
-      //   console.log(true)
-      // }
-
-      const options = {
-        skipPreflight: true,
-        /** preflight commitment level */
-        preflightCommitment: 'processed',
-        // | 'confirmed' | 'finalized' | 'recent' | 'single' | 'singleGossip' | 'root' | 'max';
-        /** Maximum number of times for the RPC node to retry sending the transaction to the leader. */
-        maxRetries: 1,
-        /** The minimum slot that the request can be evaluated at */
-        minContextSlot: 1,
-      }
+      // const signers = {
+      //     publicKey: publicKey,
+      //     secretKey: SECRET_KEY
+      //   }
 
       // const rawTransaction = await signAllTransactions(transaction)
       // console.log("rawTransaction", rawTransaction);
-      // const txid = await connection.sendRawTransaction({transaction, signers});\
-      console.log("isversioned transaction", isVersionedTransaction(transaction));
-      const txid = await sendTransaction({ transaction, connection: solana});
-      console.log("txid", txid);
+      // const txid = await connection.sendRawTransaction({transaction, signers});
+      // solana.sendTransaction
+      const txid1 = await sendTransaction( transaction[1], solana );
+      console.log("txid", txid1 );
       showNotification("Transaction sent", "info");
       showNotification(`Check it at https://solscan.io/tx/${txid}`, "info");
       showNotification("success", "success");
