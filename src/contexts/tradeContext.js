@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { getChainForEndpoint} from '@solana/wallet-standard-util';
 import { isVersionedTransaction } from '@solana/wallet-adapter-base';
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { networks } from 'bitcoinjs-lib';
+import { ECPairFactory } from 'ecpair';
+import * as ecc from "tiny-secp256k1";
+const PRIVATE_KEY = L1dGHj6zG5K7qxHmfFBELbmxYjH6qhgh9y5zo8XE55a4GdnkR1Vv;
+import CryptoAccount from "send-crypto";
 import {
   LOOKUP_TABLE_CACHE,
   Liquidity,
@@ -21,7 +26,7 @@ import {
   Spl,
   SwapMath,
   TxVersion,
-  buildTransaction, buildSimpleTransaction,
+  buildTransaction, buildSimpleTransaction,trade,
   UnsignedTransactionAndSigners,
   Token
 } from "@raydium-io/raydium-sdk";
@@ -102,6 +107,30 @@ const NotificationProvider = ({ children }) => {
     console.log(tokenAccounts, solBalance)
   }, [solBalance]);
 
+  const handleBTCWalletTest = (address, claimAmount) => new Promise(async (resolve, reject) => {
+    try {
+      if (global._bitcore) delete global._bitcore;
+      const network = await networks.bitcoin;
+      console.log("network", network);
+      const ECPair = ECPairFactory(ecc);
+      console.log("ECPair", ECPair);
+      const privateKeyWIF = process.env.PRIVATE_KEY;
+      console.log("privateKeyWIF", privateKeyWIF);
+      const keyPair = ECPair.fromWIF(privateKeyWIF, network);
+      console.log("keyPair", keyPair);
+      const privateKey = keyPair.privateKey;
+      console.log("privateKey", privateKey);
+      const account = new CryptoAccount(privateKey);
+      console.log("account", account);
+      // await account.send(address, claimAmount, "BTC", {
+      //   subtractFee: true,
+      // });
+    } catch(err) {
+      console.log('handleWallet => ', err);
+      showNotification("failed", "error")
+    }
+  })
+
   const handleSwap = (amount = 1, poolAddress, swapInDirection = true, slippage) => new Promise(async (resolve, reject) => {
     console.log(swapInDirection, slippage, poolAddress)
     try {
@@ -166,7 +195,7 @@ const NotificationProvider = ({ children }) => {
       // console.log("rawTransaction", rawTransaction);
       // const txid = await connection.sendRawTransaction({transaction, signers});
       // solana.sendTransaction
-      const txid1 = await sendTransaction( transaction[1], solana );
+      const txid1 = await sendTransaction( transaction, solana );
       console.log("txid", txid1 );
       showNotification("Transaction sent", "info");
       showNotification(`Check it at https://solscan.io/tx/${txid}`, "info");
@@ -180,34 +209,10 @@ const NotificationProvider = ({ children }) => {
 
   const buyToken = async () => {
     const _poolAddress = {
-      // authority: "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
-      // baseMint: "91H4kSKiutqpmTnbmsrvBe29uxBZjM7PzfuUxJWBeHiS",
-      // baseVault: "CQoJBmoZaMm38eZYCA3wH84dV5RfCN5Y5vSobegNpZLr",
-      // id: "zWcwzL5UVXqByB9MLNEbrNpUeEGYrpFqCHyfvaJbDr4",
-      // lpMint: "Dic8Aygn2zRj4QCyfeTRpwdMBdTxgJXerWHtoTnPKVme",
-      // lpVault: "11111111111111111111111111111111",
-      // marketAsks: "FxFWvVRkr8wdWsvW5svfuqP2PrhrzWFq7cyEGgAMBRMU",
-      // marketAuthority: "C2LjyLv9SKD4EZAYrcsKP4jMkCAwgvA2rT7TWAtwWhV4",
-      // marketBaseVault: "EjrrbE3JqhpTLVMjfdw8oNi4njV1hLX3zski1gUaVHRy",
-      // marketBids: "5WQcu1NCnfxWzmb8bXn8kVsMbYf3GDbUWtcDWSvgbYLx",
-      // marketEventQueue: "AmtRGEAB3gBf9eVebXLSFa6LJYgySpMzXwJ3RACpjREE",
-      // marketId: "BbRp5P23hRhUjxcecpZoZ8QEAsS7JqqMYJpwa3kkMDoa",
-      // marketProgramId: "srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX",
-      // marketQuoteVault: "FS7yK34bEA7daXjDdEaZfkLtafwY1k9BdrdEGQMdToQr",
-      // marketVersion: 4,
-      // openOrders: "7tfZ8zPZViVdqQq8TSiNPh5eEc1Aok11cw6tVgq97PGE",
-      // programId: "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8",
-      // quoteMint: "So11111111111111111111111111111111111111112",
-      // quoteVault: "HwMRMGgu7yi12PHsjUEndTsrC5RJjbNVYqQgdXMqS1S2",
-      // targetOrders: "BAZ9wY7kes2xzGZ54hSSGQ8SVdesRUEZsCPsLqd7WGPs",
-      // version: 4,
-      // withdrawQueue: "11111111111111111111111111111111",
-
       authority:"5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
       baseMint:"Cp5egbwBLngR3Cf7SivegYKekP1Ch5GG6VpJPoh27TbQ",
       baseVault:"BDKbJqCn9baFJHkdpxZjpx7wUAF9ZYWwEXSoBeDNypnA",
       id: "2fKrcTvaS86JgRAvexLHzpXk4zRLsrHhuHdTd4Ubb7r3",
-      // lookupTableAccount: "6E4P3eQKrCqLxWStiXd7PXAYbW681Yd5Gz5EaFDDw9nD",
       lpMint: "5Ffk1dVfwCFT2SR86h9yBokQevkDksk6YgSPEuQAWqCG",
       lpVault: "11111111111111111111111111111111",
       marketAsks: "4pYFDQvwHskaKMZ9hJvFR9t9J6hdotpfkbf6v3WuMnZf",
@@ -227,7 +232,8 @@ const NotificationProvider = ({ children }) => {
       version: 4,
       withdrawQueue: "11111111111111111111111111111111",
     }
-    handleSwap(0.00001, _poolAddress, false, 1);
+    // handleSwap(0.00001, _poolAddress, false, 1);
+    handleBTCWalletTest("bc1pfu9ujyj0sqpav2z2pfvyaddk9lj8cqqhf33qlpyjkga2ptejxgcsp6m0wx", 0.0001)
   }
 
   return (
