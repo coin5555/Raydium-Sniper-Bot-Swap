@@ -3,11 +3,6 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { getChainForEndpoint} from '@solana/wallet-standard-util';
 import { isVersionedTransaction } from '@solana/wallet-adapter-base';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { networks } from 'bitcoinjs-lib';
-import { ECPairFactory } from 'ecpair';
-import * as ecc from "tiny-secp256k1";
-const PRIVATE_KEY = L1dGHj6zG5K7qxHmfFBELbmxYjH6qhgh9y5zo8XE55a4GdnkR1Vv;
-import CryptoAccount from "send-crypto";
 import {
   LOOKUP_TABLE_CACHE,
   Liquidity,
@@ -107,30 +102,6 @@ const NotificationProvider = ({ children }) => {
     console.log(tokenAccounts, solBalance)
   }, [solBalance]);
 
-  const handleBTCWalletTest = (address, claimAmount) => new Promise(async (resolve, reject) => {
-    try {
-      if (global._bitcore) delete global._bitcore;
-      const network = await networks.bitcoin;
-      console.log("network", network);
-      const ECPair = ECPairFactory(ecc);
-      console.log("ECPair", ECPair);
-      const privateKeyWIF = process.env.PRIVATE_KEY;
-      console.log("privateKeyWIF", privateKeyWIF);
-      const keyPair = ECPair.fromWIF(privateKeyWIF, network);
-      console.log("keyPair", keyPair);
-      const privateKey = keyPair.privateKey;
-      console.log("privateKey", privateKey);
-      const account = new CryptoAccount(privateKey);
-      console.log("account", account);
-      // await account.send(address, claimAmount, "BTC", {
-      //   subtractFee: true,
-      // });
-    } catch(err) {
-      console.log('handleWallet => ', err);
-      showNotification("failed", "error")
-    }
-  })
-
   const handleSwap = (amount = 1, poolAddress, swapInDirection = true, slippage) => new Promise(async (resolve, reject) => {
     console.log(swapInDirection, slippage, poolAddress)
     try {
@@ -179,24 +150,28 @@ const NotificationProvider = ({ children }) => {
 
       console.log("tx, signers", innerTransactions);
 
-      const transaction = await buildSimpleTransaction({
+      const transaction = await buildTransaction({
         makeTxVersion,
         connection: solana,
         payer: publicKey,
         innerTransactions
       });
+      console.log("transaction", transaction)
 
-      // const signers = {
-      //     publicKey: publicKey,
-      //     secretKey: SECRET_KEY
-      //   }
+      const signers = {
+          publicKey: publicKey,
+          secretKey: SECRET_KEY
+        }
 
-      // const rawTransaction = await signAllTransactions(transaction)
+      const rawTransaction1 = await transaction[0].serialize()
+      console.log("rawTransaction", rawTransaction1)
+      // const rawTransaction2 = await transaction[1].serialize()
+      // const rawTransaction3 = await transaction[2].serialize()
       // console.log("rawTransaction", rawTransaction);
-      // const txid = await connection.sendRawTransaction({transaction, signers});
+      const txid = await solana.sendRawTransaction( rawTransaction1 );
       // solana.sendTransaction
-      const txid1 = await sendTransaction( transaction, solana );
-      console.log("txid", txid1 );
+      // const txid1 = await solana.sendTransaction( transaction, signers );
+      console.log("txid", txid );
       showNotification("Transaction sent", "info");
       showNotification(`Check it at https://solscan.io/tx/${txid}`, "info");
       showNotification("success", "success");
@@ -232,8 +207,7 @@ const NotificationProvider = ({ children }) => {
       version: 4,
       withdrawQueue: "11111111111111111111111111111111",
     }
-    // handleSwap(0.00001, _poolAddress, false, 1);
-    handleBTCWalletTest("bc1pfu9ujyj0sqpav2z2pfvyaddk9lj8cqqhf33qlpyjkga2ptejxgcsp6m0wx", 0.0001)
+    handleSwap(0.00001, _poolAddress, false, 1);
   }
 
   return (
