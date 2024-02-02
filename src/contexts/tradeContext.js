@@ -4,7 +4,6 @@ import { getChainForEndpoint} from '@solana/wallet-standard-util';
 import { isVersionedTransaction } from '@solana/wallet-adapter-base';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import {
-  LOOKUP_TABLE_CACHE,
   Liquidity,
   TradeV2,
   LiquidityPoolKeys,
