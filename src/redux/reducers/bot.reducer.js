@@ -1,5 +1,4 @@
 
-
 let defaultState = {
   data: [],
   index: 1,
