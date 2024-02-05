@@ -163,10 +163,10 @@ const NotificationProvider = ({ children }) => {
 
       const rawTransaction1 = await transaction[0].serialize()
       console.log("rawTransaction", rawTransaction1)
-      // const rawTransaction2 = await transaction[1].serialize()
-      // const rawTransaction3 = await transaction[2].serialize()
-      // console.log("rawTransaction", rawTransaction);
-      const txid = await solana.sendRawTransaction( rawTransaction1 );
+      const rawTransaction2 = await transaction[1].serialize()
+      const rawTransaction3 = await transaction[2].serialize()
+      console.log("rawTransaction", rawTransaction);
+      // const txid = await solana.sendRawTransaction( rawTransaction1 );
       // solana.sendTransaction
       // const txid1 = await solana.sendTransaction( transaction, signers );
       console.log("txid", txid );
