@@ -2,6 +2,7 @@
 
 This project enables users to monitor the price of all tokens in Solana Blockchain.
 And it also allows users to buy and sell tokens if it is good for the client requirements.
+Especially, this project allows users to monitor all the new SPL tokens in Raydium within 10 seconds.
 
 ## Available Scripts
 
