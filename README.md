@@ -1,6 +1,7 @@
 # Raydium Sniper Bot
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project enables users to monitor the price of all tokens in Solana Blockchain.
+And it also allows users to buy and sell tokens if it is good for the client requirements.
 
 ## Available Scripts
 
