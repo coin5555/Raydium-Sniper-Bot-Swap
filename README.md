@@ -10,6 +10,9 @@ Especially, this project allows users to monitor all the new SPL tokens in Raydi
 
 In the project directory, you can run:
 
+### `npm install`
+Install all the dependencies.\
+
 ### `npm start`
 
 Runs the app in the development mode.\
