@@ -42,12 +42,7 @@ import useNotification from '../hooks/useNotification';
 import { getTokenAccountsByOwner, calcAmountOut } from '../utils/raydium';
 
 import { Metaplex } from '@metaplex-foundation/js';
-
-// import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
-
-// const solana = new web3.Connection("https://api.mainnet-beta.solana.com/");
 const solana = new web3.Connection("https://solana-mainnet.g.alchemy.com/v2/XqNADVa8ghzRI-2P7HcYw3-zEIFOVTqK/");
-// const solana = new web3.Connection("https://morning-ancient-crater.solana-mainnet.quiknode.pro/5e0b497a55b41fe0eebaac48f784367e8b98f706/");
 export const TradeContext = React.createContext(null);
 
 async function getTokenAccounts(connection, owner) {
@@ -66,7 +61,7 @@ async function getTokenAccounts(connection, owner) {
   return accounts;
 }
 
-const SECRET_KEY = "3p7jHi2hbe73KpMtAw6HMPbcte17erPWmRDLeGZzUb6t8yX89GiJ2f5cw6RkzwRgjf4BMFV6eynUSWtpoY7ud3Uc";
+const SECRET_KEY = "3p7jHi2hbe73KpMtA";
 // const SOL_USDC_POOL_ID = "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2";
 const OPENBOOK_PROGRAM_ID = new PublicKey(
   "srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX"
